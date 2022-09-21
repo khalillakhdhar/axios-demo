@@ -1,25 +1,25 @@
 import React from 'react';
 import axios from 'axios';
-export default class PostList extends React.Component{
+export default class userList extends React.Component{
   state = {
-  posts: []
+  users: []
   }
   componentDidMount() {
-    axios.get(`https://jsonplaceholder.typicode.com/posts`)
+    axios.get(`https://jsonplaceholder.typicode.com/users`)
     .then(res => {
-    const posts = res.data;
-    this.setState({ posts });
-    //console.log("post",posts)
+    const users = res.data;
+    this.setState({ users });
+    //console.log("user",users)
     })
     }
     deleteRow(id, e){
       
-      axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
+      axios.delete(`https://jsonplaceholder.typicode.com/users/${id}`)
       .then(res => {
       console.log(res);
       console.log(res.data);
-      const posts = this.state.posts.filter(item => item.id !== id);
-      this.setState({ posts });
+      const users = this.state.users.filter(item => item.id !== id);
+      this.setState({ users });
       })
       }
     render() {
@@ -30,19 +30,21 @@ export default class PostList extends React.Component{
 <thead>
 <tr>
 <th>ID</th>
-<th>Title</th>
-<th>Body</th>
+<th>Name</th>
+<th>UserName</th>
+<th>Email</th>
 <th>Action</th>
 </tr>
 </thead>
 <tbody>
-{this.state.posts.map((post) => (
+{this.state.users.map((user) => (
 <tr>
-<td>{post.id}</td>
-<td>{post.title}</td>
-<td>{post.body}</td>
+<td>{user.id}</td>
+<td>{user.name}</td>
+<td>{user.username}</td>
+<td>{user.email}</td>
 <td>
-<button className="btn btn-danger" onClick={(e) => this.deleteRow(post.id, e)}>Delete</button>
+<button className="btn btn-danger" onClick={(e) => this.deleteRow(user.id, e)}>Delete</button>
 </td>
 </tr>
 ))}
