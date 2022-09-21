@@ -1,25 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React from 'react';
+import axios from 'axios';
+export default class PostList extends React.Component{
+  state = {
+  posts: []
+  }
+  componentDidMount() {
+    axios.get(`https://jsonplaceholder.typicode.com/posts`)
+    .then(res => {
+    const posts = res.data;
+    this.setState({ posts });
+    //console.log("post",posts)
+    })
+    }
+    deleteRow(id, e){
+      
+      axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
+      .then(res => {
+      console.log(res);
+      console.log(res.data);
+      const posts = this.state.posts.filter(item => item.id !== id);
+      this.setState({ posts });
+      })
+      }
+    render() {
+      return(
+        <>
+        <h2 className="text-center">Axios Read/delete</h2>
+        <table className="table table-bordered">
+<thead>
+<tr>
+<th>ID</th>
+<th>Title</th>
+<th>Body</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+{this.state.posts.map((post) => (
+<tr>
+<td>{post.id}</td>
+<td>{post.title}</td>
+<td>{post.body}</td>
+<td>
+<button className="btn btn-danger" onClick={(e) => this.deleteRow(post.id, e)}>Delete</button>
+</td>
+</tr>
+))}
+</tbody>
+</table>
+        </>
+      )
+    };
 }
-
-export default App;
